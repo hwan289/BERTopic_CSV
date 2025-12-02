@@ -135,7 +135,7 @@ if uploaded_file:
         df = df.reset_index(drop=True)
         
         if len(df) == 0:
-            st.error("Error: No valid text data found.")
+            st.error("Error: No valid text data found on the column.")
         else:
             docs = df[text_col].astype(str).tolist()
             st.sidebar.success(f"Loaded {len(docs)} docs")
