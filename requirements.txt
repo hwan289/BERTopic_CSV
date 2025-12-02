@@ -3,7 +3,7 @@ bertopic
 pandas
 plotly
 scikit-learn
-pyarrow==17.0.0
+pyarrow
 torch
 sentence-transformers
 nltk
