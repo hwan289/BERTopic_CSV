@@ -4,7 +4,7 @@ import time
 import streamlit as st
 import pandas as pd
 import io
-import numpy as np 
+import numpy as np
 
 # --- CONFIGURATION: Force Single Threading ---
 os.environ["OMP_NUM_THREADS"] = "1"
@@ -98,10 +98,17 @@ def t(key):
 # -----------------------------------------------------------------------------
 # Styling Helpers
 # -----------------------------------------------------------------------------
+
+# Define the color for the title (Gemini Blue)
+GEMINI_BLUE = "#4285F4" 
+
 def style_fig(fig):
     """Applies custom styling to Plotly figures."""
     if fig:
         fig.update_layout(
+            # 💡 THIS IS THE CHANGE: Set the title color for all Plotly charts
+            title_font_color=GEMINI_BLUE,
+            
             hoverlabel=dict(
                 bgcolor="#333333",
                 font_color="#4b8bf5",
@@ -348,10 +355,11 @@ if 'model' in st.session_state:
         if not has_topics:
             st.warning(t('no_topics_warning'))
         elif real_topic_count < 4:
-             st.info(f"ℹ️ **Not enough topics for Distance Map ({real_topic_count} found).**\n\nNeeds at least 4 topics.")
+            st.info(f"ℹ️ **Not enough topics for Distance Map ({real_topic_count} found).**\n\nNeeds at least 4 topics.")
         else:
             try:
                 fig = model.visualize_topics()
+                # style_fig applies the title color change
                 st.plotly_chart(style_fig(fig), use_container_width=True)
             except Exception as e: st.warning(t('viz_error').format(e))
 
@@ -364,6 +372,7 @@ if 'model' in st.session_state:
         else:
             try:
                 fig = model.visualize_barchart(top_n_topics=10)
+                # style_fig applies the title color change
                 st.plotly_chart(style_fig(fig), use_container_width=True)
             except Exception as e: st.warning(t('viz_error').format(e))
 
@@ -376,6 +385,7 @@ if 'model' in st.session_state:
         else:
             try:
                 fig = model.visualize_heatmap()
+                # style_fig applies the title color change
                 st.plotly_chart(style_fig(fig), use_container_width=True)
             except Exception as e: st.warning(t('viz_error').format(e))
 elif not docs:
