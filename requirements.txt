@@ -1,0 +1,9 @@
+streamlit
+bertopic
+pandas
+plotly
+scikit-learn
+pyarrow==17.0.0
+torch
+sentence-transformers
+nltk
