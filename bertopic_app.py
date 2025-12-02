@@ -108,6 +108,8 @@ def style_fig(fig):
         fig.update_layout(
             # 💡 THIS IS THE CHANGE: Set the title color for all Plotly charts
             title_font_color=GEMINI_BLUE,
+
+            margin=dict(t=80),
             
             hoverlabel=dict(
                 bgcolor="#333333",
