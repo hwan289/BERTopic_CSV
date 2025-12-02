@@ -25,15 +25,19 @@ st.set_page_config(
 )
 
 # -----------------------------------------------------------------------------
-# Check Environment (Debug Help)
+# Check Environment (Debug Help - FIXED FOR CLOUD)
 # -----------------------------------------------------------------------------
-if os.environ.get('OBJC_DISABLE_INITIALIZE_FORK_SAFETY') != 'YES':
-    st.error("""
-    🛑 **Critical Error: App launched incorrectly**
-    
-    You are running on macOS, which requires a specific security flag to be disabled.
-    Please stop this app and run it using the `run_app.sh` script provided.
-    """)
+# Only run this check if we are actually on a Mac (Darwin).
+# Linux servers (Streamlit Cloud) will skip this block entirely.
+if sys.platform == "darwin":
+    if os.environ.get('OBJC_DISABLE_INITIALIZE_FORK_SAFETY') != 'YES':
+        st.error("""
+        🛑 **Critical Error: App launched incorrectly (Local Mac)**
+        
+        You are running on macOS, which requires a specific security flag to be disabled.
+        Please stop this app and run it using the `run_app.sh` script provided.
+        """)
+        st.stop()
 
 # -----------------------------------------------------------------------------
 # Language & Translations
@@ -150,8 +154,9 @@ def get_lemmatizer_analyzer():
             nltk.data.find('corpora/wordnet')
             nltk.data.find('corpora/omw-1.4')
         except LookupError:
-            nltk.download('wordnet', quiet=True)
-            nltk.download('omw-1.4', quiet=True)
+            with st.spinner("Downloading NLTK data (WordNet)... this happens once."):
+                nltk.download('wordnet')
+                nltk.download('omw-1.4')
     except ImportError:
         st.error("❌ `nltk` library missing. Please run: `pip install nltk`")
         st.stop()
